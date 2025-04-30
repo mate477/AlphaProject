@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tech Store</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header>
+    <div class="header-content">
+        <div class="site-title">Tech Store</div>
+        <div class="cart-icon" id="cartIcon">
+            <img src="images/cart.png" alt="Cart">
+            <div id="cartCount">0</div>
+        </div>
+    </div>
+</header>
+
+<!-- Content -->
+<div class="container">
+    <div class="product-list">
+        <h2>Products</h2>
+        <div id="productList"></div>
+    </div>
+
+    <div class="cart" id="cartSection" style="display: none;"> <!-- Rejtett kosár -->
+        <h2>Cart</h2>
+        <div id="cartList"></div>
+    </div>
+</div>
+
+<!-- Toast message location -->
+<div id="toast"></div>
+
+<!-- Script -->
+<script src="js/script.js"></script>
+
+</body>
+</html>
