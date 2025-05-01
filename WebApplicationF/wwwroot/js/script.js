@@ -1,4 +1,63 @@
-const apiBaseUrl = "https://localhost:7071";
+//const apiBaseUrl = "https://alphaproject.azurewebsites.net/";
+const apiBaseUrl = "https://localhost:7045";
+
+// Show/hide auth forms
+function showLogin() {
+    document.getElementById("loginForm").style.display = "block";
+    document.getElementById("registerForm").style.display = "none";
+}
+
+function showRegister() {
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("registerForm").style.display = "block";
+}
+
+async function login() {
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+
+    const response = await fetch(`${apiBaseUrl}/user/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+    });
+
+    if (response.ok) {
+        showToast("✅ Login successful!");
+        document.getElementById("loginForm").style.display = "none";
+    } else {
+        const error = await response.text();
+        showToast(`❌ ${error}`);
+    }
+}
+
+async function register() {
+    const email = document.getElementById("regEmail").value;
+    const confirmEmail = document.getElementById("regConfirmEmail").value;
+    const password = document.getElementById("regPassword").value;
+    const confirmPassword = document.getElementById("regConfirmPassword").value;
+    const dateOfBirth = document.getElementById("regDob").value;
+
+    const response = await fetch(`${apiBaseUrl}/user/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            email,
+            confirmEmail,
+            password,
+            confirmPassword,
+            dateOfBirth
+        })
+    });
+
+    if (response.ok) {
+        showToast("✅ Registration successful!");
+        document.getElementById("registerForm").style.display = "none";
+    } else {
+        const error = await response.text();
+        showToast(`❌ ${error}`);
+    }
+}
 
 // Load Products
 async function loadProducts() {
@@ -37,7 +96,7 @@ async function loadProducts() {
     }
 }
 
-// Load Cart
+// Load Cart (aggregated fix)
 async function loadCart() {
     const response = await fetch(`${apiBaseUrl}/cart`);
     const cartItems = await response.json();
@@ -46,15 +105,23 @@ async function loadCart() {
 
     let total = 0;
 
-    if (cartItems.length === 0) {
+    const aggregated = {};
+    for (const item of cartItems) {
+        if (!aggregated[item.productId]) {
+            aggregated[item.productId] = { ...item };
+        } else {
+            aggregated[item.productId].quantity += item.quantity;
+        }
+    }
+
+    const ids = Object.keys(aggregated);
+    if (ids.length === 0) {
         const emptyMessage = document.createElement('div');
         emptyMessage.innerText = "Cart is currently empty.";
         list.appendChild(emptyMessage);
     } else {
-        const rendered = new Set();
-        for (const item of cartItems) {
-            if (rendered.has(item.productId)) continue;
-            rendered.add(item.productId);
+        for (const id of ids) {
+            const item = aggregated[id];
             const productResponse = await fetch(`${apiBaseUrl}/product/${item.productId}`);
             const product = await productResponse.json();
             total += product.price * item.quantity;
@@ -94,7 +161,8 @@ async function loadCart() {
         list.appendChild(clearButton);
     }
 
-    document.getElementById('cartCount').innerText = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    document.getElementById('cartCount').innerText =
+        Object.values(aggregated).reduce((sum, item) => sum + item.quantity, 0);
 }
 
 // Cart operations

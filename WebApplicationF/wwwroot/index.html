@@ -11,12 +11,34 @@
 <header>
     <div class="header-content">
         <div class="site-title">Tech Store</div>
+        <div id="authPanel">
+            <button onclick="showLogin()">Login</button>
+            <button onclick="showRegister()">Register</button>
+        </div>
         <div class="cart-icon" id="cartIcon">
             <img src="images/cart.png" alt="Cart">
             <div id="cartCount">0</div>
         </div>
     </div>
 </header>
+
+<!-- Auth Forms -->
+<div id="loginForm" style="display: none;">
+    <h2>Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email" />
+    <input type="password" id="loginPassword" placeholder="Password" />
+    <button onclick="login()">Login</button>
+</div>
+
+<div id="registerForm" style="display: none;">
+    <h2>Register</h2>
+    <input type="email" id="regEmail" placeholder="Email" />
+    <input type="email" id="regConfirmEmail" placeholder="Confirm Email" />
+    <input type="password" id="regPassword" placeholder="Password" />
+    <input type="password" id="regConfirmPassword" placeholder="Confirm Password" />
+    <input type="date" id="regDob" />
+    <button onclick="register()">Register</button>
+</div>
 
 <!-- Content -->
 <div class="container">
@@ -25,7 +47,7 @@
         <div id="productList"></div>
     </div>
 
-    <div class="cart" id="cartSection" style="display: none;"> <!-- Rejtett kosár -->
+    <div class="cart" id="cartSection" style="display: none;">
         <h2>Cart</h2>
         <div id="cartList"></div>
     </div>

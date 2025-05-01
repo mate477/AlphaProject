@@ -18,3 +18,22 @@ type Order = {
     Items: CartItem list
     TotalQuantity: int
 }
+
+type User = {
+    Email: string
+    PasswordHash: string
+    DateOfBirth: System.DateTime
+}
+
+type RegisterDto = {
+    Email: string
+    ConfirmEmail: string
+    Password: string
+    ConfirmPassword: string
+    DateOfBirth: System.DateTime
+}
+
+type LoginDto = {
+    Email: string
+    Password: string
+}
