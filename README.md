@@ -2,9 +2,13 @@
 
 # Tech Store Webshop SPA in F#
 
+# Try-Live link:
+
+https://alphaproject.azurewebsites.net/
+
 # Screenshot
 
-[images/screenshot.png]
+[screenshot.png]
 
 This project is a functional web-based online store (webshop) built using **F#** on the backend and **HTML/CSS/JavaScript** on the frontend. It simulates a basic e-commerce system where users can view products, manage a shopping cart, and place orders.
 
